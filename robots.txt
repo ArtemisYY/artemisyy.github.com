@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://ArtemisYY.github.io/sitemap.xml 
