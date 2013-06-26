@@ -4,7 +4,7 @@
   <title><![CDATA[ArtemisYY's Blog]]></title>
   <link href="http://ArtemisYY.github.io/atom.xml" rel="self"/>
   <link href="http://ArtemisYY.github.io/"/>
-  <updated>2013-06-26T12:47:04+08:00</updated>
+  <updated>2013-06-26T12:54:46+08:00</updated>
   <id>http://ArtemisYY.github.io/</id>
   <author>
     <name><![CDATA[ArtemisYY]]></name>
@@ -18,7 +18,16 @@
     <link href="http://ArtemisYY.github.io/blog/2013/06/26/i-am-artemis/"/>
     <updated>2013-06-26T10:38:00+08:00</updated>
     <id>http://ArtemisYY.github.io/blog/2013/06/26/i-am-artemis</id>
-    <content type="html"><![CDATA[
+    <content type="html"><![CDATA[<p>这是一个普通段落。</p>
+
+<table>
+    <tr>
+        <td>Foo</td>
+    </tr>
+</table>
+
+
+<p>这是另一个普通段落。</p>
 ]]></content>
   </entry>
   
