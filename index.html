@@ -9,7 +9,7 @@
   <meta name="author" content="ArtemisYY">
 
   
-  <meta name="description" content="(Leetcode 129) Given a binary tree containing digits from 0-9 only, each root-to-leaf path could represent a number. An example is the root-to-leaf &hellip;">
+  <meta name="description" content="三道题(Leetcode 121 —— 123) Say you have an array for which the ith element is the price of a given stock on day i. If you were only permitted to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +70,222 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/07/31/best-time-to-buy-and-sell-stock/">Best Time to Buy and Sell Stock</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-31T17:02:00+08:00" pubdate data-updated="true">Jul 31<span>st</span>, 2013</time>
+        
+         | <a href="/blog/2013/07/31/best-time-to-buy-and-sell-stock/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>三道题(Leetcode 121 —— 123) <br/>
+Say you have an array for which the <em>i</em>th element is the price of a given stock on day <em>i</em>.</p>
+
+<ul>
+<li>If you were only permitted to complete at most one transaction (ie, buy one and sell one share of the stock), design an algorithm to find the maximum profit.</li>
+<li>Design an algorithm to find the maximum profit. You may complete as many transactions as you like (ie, buy one and sell one share of the stock multiple times). However, you may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).</li>
+<li>Design an algorithm to find the maximum profit. You may complete at most two transactions.</li>
+</ul>
+
+
+<p>=================================================================================
+解题思路：       <br/>
+(1) 寻找序列整数的最大差，且小数出现在前面。 <br/>
+(2) 寻找连续递增空间。 <br/>
+(3) 将数组(0——i, i+1——n-1)两部分，left[i] 和 right[j]分别记录0——i, j——n-1两部分可获取的最大利润</p>
+
+<figure class='code'><figcaption><span>Leetcode121.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">//elegent code</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">int</span> <span class="nf">maxProfit</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">prices</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>     <span class="k">if</span><span class="o">(</span><span class="n">prices</span><span class="o">.</span><span class="na">length</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>     <span class="kt">int</span> <span class="n">max</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>     <span class="kt">int</span> <span class="n">distance</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>     <span class="k">for</span><span class="o">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">prices</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+</span><span class='line'>     <span class="o">{</span>
+</span><span class='line'>  <span class="n">distance</span> <span class="o">=</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">-</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span> <span class="o">+</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">distance</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">max</span> <span class="o">=</span> <span class="o">(</span><span class="n">distance</span> <span class="o">&gt;</span> <span class="n">max</span><span class="o">)</span> <span class="o">?</span> <span class="n">distance</span> <span class="o">:</span><span class="n">max</span><span class="o">;</span>
+</span><span class='line'>     <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">max</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="c1">// my ugly code</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">int</span> <span class="nf">maxProfit</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">prices</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span><span class="o">(</span><span class="n">prices</span><span class="o">.</span><span class="na">length</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">max</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">min</span> <span class="o">=</span> <span class="n">prices</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+</span><span class='line'>      <span class="k">for</span><span class="o">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">prices</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+</span><span class='line'>      <span class="o">{</span>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span><span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">-</span> <span class="n">min</span> <span class="o">&gt;</span> <span class="n">max</span><span class="o">)</span>
+</span><span class='line'>     <span class="n">max</span> <span class="o">=</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">-</span> <span class="n">min</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">min</span> <span class="o">=</span> <span class="o">(</span><span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">min</span> <span class="o">)</span> <span class="o">?</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">:</span> <span class="n">min</span><span class="o">;</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">max</span><span class="o">;</span>
+</span><span class='line'> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>Leetcode122.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kt">int</span> <span class="nf">maxProfit</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">prices</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span><span class="n">prices</span><span class="o">.</span><span class="na">length</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span>
+</span><span class='line'>     <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">max</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">start</span> <span class="o">=</span> <span class="n">prices</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+</span><span class='line'>  <span class="k">for</span><span class="o">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">prices</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++</span> <span class="o">)</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>      <span class="k">if</span><span class="o">(</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">]-</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+</span><span class='line'>   <span class="k">continue</span><span class="o">;</span>
+</span><span class='line'>      <span class="n">max</span> <span class="o">+=</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span> <span class="o">-</span> <span class="n">start</span><span class="o">;</span>
+</span><span class='line'>      <span class="n">start</span> <span class="o">=</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="n">max</span> <span class="o">+=</span> <span class="n">prices</span><span class="o">[</span><span class="n">prices</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">]</span> <span class="o">-</span><span class="n">start</span><span class="o">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">max</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>Leetcode123.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kt">int</span> <span class="nf">maxProfit</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">prices</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span><span class="o">(</span> <span class="n">prices</span><span class="o">.</span><span class="na">length</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">left</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">prices</span><span class="o">.</span><span class="na">length</span><span class="o">];</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">right</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span> <span class="o">[</span><span class="n">prices</span><span class="o">.</span><span class="na">length</span><span class="o">];</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">min</span> <span class="o">=</span> <span class="n">prices</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">maxP</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">left</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>    <span class="k">for</span><span class="o">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">prices</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>  <span class="n">left</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">left</span><span class="o">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="o">],</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">-</span> <span class="n">min</span><span class="o">)</span> <span class="o">;</span>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">min</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">min</span> <span class="o">=</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">right</span><span class="o">[</span><span class="n">prices</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">max</span> <span class="o">=</span> <span class="n">prices</span><span class="o">[</span><span class="n">prices</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span><span class="mi">1</span><span class="o">];</span>
+</span><span class='line'>    <span class="k">for</span><span class="o">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">prices</span><span class="o">.</span><span class="na">length</span><span class="o">-</span><span class="mi">2</span><span class="o">;</span> <span class="n">i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">--)</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>  <span class="n">right</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">right</span><span class="o">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">],</span> <span class="n">max</span> <span class="o">-</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">)</span> <span class="o">;</span>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">&gt;</span> <span class="n">max</span><span class="o">)</span>
+</span><span class='line'>      <span class="n">max</span> <span class="o">=</span> <span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>      
+</span><span class='line'>    <span class="n">maxP</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="n">left</span><span class="o">[</span><span class="n">prices</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span><span class="mi">1</span><span class="o">],</span> <span class="n">right</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
+</span><span class='line'>    <span class="k">for</span><span class="o">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="n">prices</span><span class="o">.</span><span class="na">length</span><span class="o">-</span><span class="mi">2</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+</span><span class='line'>        <span class="k">if</span><span class="o">(</span><span class="n">maxP</span> <span class="o">&lt;</span> <span class="n">left</span><span class="o">[</span><span class="n">i</span><span class="o">]+</span> <span class="n">right</span><span class="o">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">])</span>
+</span><span class='line'>      <span class="n">maxP</span> <span class="o">=</span> <span class="n">left</span><span class="o">[</span><span class="n">i</span><span class="o">]+</span> <span class="n">right</span><span class="o">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">];</span>
+</span><span class='line'>      
+</span><span class='line'>    <span class="k">return</span> <span class="n">maxP</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+
+    </article>
   
   
     <article>
@@ -197,7 +413,7 @@ Return the sum = 12 + 13 = 25.</p>
   </header>
 
 
-  <div class="entry-content"><p>两道题(Leetcode 131 &amp; 132)都是<strong><big>字符串回文分割问题</big></strong>：<br/>
+  <div class="entry-content"><p>两道题(Leetcode 121 &ndash; 123).<br/>
 Given a string s, partition s such that every substring of the partition is a palindrome.<br/>
    1. Return all possible palindrome partitioning of s. <br/>
    2. Return the minimum cuts needed for a palindrome partitioning of s.</p>
@@ -452,6 +668,10 @@ Given a string s, partition s such that every substring of the partition is a pa
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/07/31/best-time-to-buy-and-sell-stock/">Best Time to Buy and Sell Stock</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/07/31/sum-root-to-leaf-numbers/">Sum Root to Leaf Numbers</a>
       </li>
     
@@ -475,7 +695,7 @@ Given a string s, partition s such that every substring of the partition is a pa
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/leetcode/'>Leetcode (2)</a></li>
+    <li class='category'><a href='/blog/categories/leetcode/'>Leetcode (3)</a></li>
 <li class='category'><a href='/blog/categories/life/'>Life (1)</a></li>
 
   </ul>
