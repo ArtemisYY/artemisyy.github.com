@@ -4,7 +4,7 @@
   <title><![CDATA[ArtemisYY's Blog]]></title>
   <link href="http://ArtemisYY.github.io/atom.xml" rel="self"/>
   <link href="http://ArtemisYY.github.io/"/>
-  <updated>2013-08-04T19:27:00+08:00</updated>
+  <updated>2013-08-04T19:54:20+08:00</updated>
   <id>http://ArtemisYY.github.io/</id>
   <author>
     <name><![CDATA[ArtemisYY]]></name>
@@ -16,12 +16,12 @@
   <entry>
     <title type="html"><![CDATA[Longest Consecutive Sequence]]></title>
     <link href="http://ArtemisYY.github.io/blog/2013/08/04/longest-consecutive-sequence/"/>
-    <updated>2013-08-04T19:04:00+08:00</updated>
+    <updated>2013-08-04T19:46:00+08:00</updated>
     <id>http://ArtemisYY.github.io/blog/2013/08/04/longest-consecutive-sequence</id>
     <content type="html"><![CDATA[<p>Leetcode 128， 无序数组求最长连续序列的长度。要求时间复杂度位O(log N).    <br/>
-最直观的想法，先排序，然后求最长连续序列的长度。但是时间复杂度位O(N log N).</p>
+最直观的想法，先排序，然后求最长连续序列的长度。但是时间复杂度位O(N log N). <!--more--></p>
 
-<p>Given an unsorted array of integers, find the length of the longest consecutive elements sequence.  <!--more></p>
+<p>Given an unsorted array of integers, find the length of the longest consecutive elements sequence.</p>
 
 <p>For example,
 Given [100, 4, 200, 1, 3, 2],
@@ -32,8 +32,9 @@ Your algorithm should run in O(n) complexity.</p>
 
 <p>涉及到“在未排序集合中寻找有序集合”的题目，可以考虑本题的思路。</p>
 
-<p>========================================================================================
-1.O(N log N) 排序，没搞明白为什么runtimeerror，超时？可是有人说用排序也过了的啊～</p>
+<p>==============================================================================</p>
+
+<p>1.O(N log N) 排序，没搞明白为什么runtime error，超时？可是有人说用排序也过了的啊～</p>
 
 <figure class='code'><figcaption><span>leetcode128.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -140,10 +141,8 @@ Your algorithm should run in O(n) complexity.</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<ol>
-<li>O(N)</li>
-</ol>
-
+<p>  <br/>
+2. O(N)思路很巧妙，以后记得借鉴。</p>
 
 <figure class='code'><figcaption><span>leetcode128.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -202,6 +201,8 @@ Your algorithm should run in O(n) complexity.</p>
 </span><span class='line'>  <span class="k">return</span> <span class="n">count</span><span class="o">;</span>
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
 
 ]]></content>
   </entry>
