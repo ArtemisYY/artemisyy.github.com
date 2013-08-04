@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 刷题 | ArtemisYY's Blog]]></title>
   <link href="http://ArtemisYY.github.io/tags/shua-ti/atom.xml" rel="self"/>
   <link href="http://ArtemisYY.github.io/"/>
-  <updated>2013-08-04T19:54:20+08:00</updated>
+  <updated>2013-08-04T22:18:06+08:00</updated>
   <id>http://ArtemisYY.github.io/</id>
   <author>
     <name><![CDATA[ArtemisYY]]></name>
@@ -12,6 +12,113 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Binary Tree Level Order Traversal]]></title>
+    <link href="http://ArtemisYY.github.io/blog/2013/08/04/binary-tree-level-order-traversal/"/>
+    <updated>2013-08-04T22:01:00+08:00</updated>
+    <id>http://ArtemisYY.github.io/blog/2013/08/04/binary-tree-level-order-traversal</id>
+    <content type="html"><![CDATA[<p>Leetcode 102, 107. 没写完。</p>
+
+<p>Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).    <!--more-->
+For example:
+Given binary tree {3,9,20,#,#,15,7},</p>
+
+<pre><code>    3
+   / \
+  9  20
+    /  \
+   15   7
+</code></pre>
+
+<p>return its level order traversal as:[ [3],[9,20],[15,7] ]</p>
+
+<p>解题思路：  <br/>
+(1).广度优先BFS，用队列.</p>
+
+<ul>
+<li>两个队列，分别记录当前层和下一层的结点.</li>
+<li>一个队列，以及整型count，nextCount，分别记录当前层和下一层的结点个数.<br>
+(2).深度优先DFS.还有点问题.</li>
+</ul>
+
+
+<p>===================================================================================================================
+```java leetcode102.java
+public  ArrayList&lt;ArrayList<Integer>> levelOrder(TreeNode root) {</p>
+
+<pre><code>ArrayList&lt;ArrayList&lt;Integer&gt;&gt; traversal = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+if( root == null)
+return traversal;
+ArrayList&lt;Integer&gt; level = new ArrayList&lt;Integer&gt;();
+Queue&lt; TreeNode&gt; upper = new LinkedList&lt;TreeNode&gt;();
+Queue&lt;TreeNode&gt; lower = new LinkedList&lt;TreeNode&gt;();
+upper.add(root);
+while( !upper.isEmpty() || !lower.isEmpty())
+{
+    ArrayList&lt;Integer&gt; tempList = new ArrayList&lt;Integer&gt;();
+    while(!upper.isEmpty())
+    {
+        TreeNode tempNode = upper.peek();
+        tempList.add(tempNode.val);
+        if( tempNode.left != null)
+            lower.add(tempNode.left);
+        if(tempNode.right != null)
+            lower.add(tempNode.right);
+        upper.poll();
+    }
+    level = new ArrayList&lt;Integer&gt;(tempList);//注意一定得这么干，否则直接加tempList, 出了作用域就没了。-_-|||
+    traversal.add(level);
+    for( TreeNode node : lower)
+        upper.add(node);
+    lower.clear();
+}
+
+return traversal;
+</code></pre>
+
+<p>}  <br/>
+<code>
+</code>java leetcode102.java
+ public static ArrayList&lt;ArrayList<Integer>> levelOrder(TreeNode root) {</p>
+
+<pre><code>ArrayList&lt;ArrayList&lt;Integer&gt;&gt; traversal = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+if( root == null)
+    return traversal;
+Queue&lt;TreeNode&gt; queue = new LinkedList&lt;TreeNode&gt;();
+queue.add(root);
+int count = 1;
+ArrayList&lt;Integer&gt; level;
+while(!queue.isEmpty())
+{
+    level = new ArrayList&lt;Integer&gt;();
+    int nextCount = 0;
+    for( int i=0; i&lt;count; i++)
+    {
+        TreeNode temp = queue.poll();
+        level.add(temp.val);
+        if( temp.left != null)
+        {
+            queue.add(temp.left);
+            nextCount++;
+        }
+        if(temp.right != null)
+        {
+            queue.add(temp.right);
+            nextCount++;
+        }
+    }
+    traversal.add(level);
+    count = nextCount;
+
+}
+return traversal;
+</code></pre>
+
+<p>}
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Longest Consecutive Sequence]]></title>
@@ -395,131 +502,6 @@ return calculateSum(root.left, prefix) + calculateSum(root.right, prefix);
 
 <p>}
 ```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Palindrome Partitioning]]></title>
-    <link href="http://ArtemisYY.github.io/blog/2013/07/27/leetcode-131-and-132-palindrome-partitioning/"/>
-    <updated>2013-07-27T17:51:00+08:00</updated>
-    <id>http://ArtemisYY.github.io/blog/2013/07/27/leetcode-131-and-132-palindrome-partitioning</id>
-    <content type="html"><![CDATA[<p>两道题(Leetcode 121 &ndash; 123).<br/>
-Given a string s, partition s such that every substring of the partition is a palindrome.<br/>
-   1. Return all possible palindrome partitioning of s. <br/>
-   2. Return the minimum cuts needed for a palindrome partitioning of s.</p>
-
-<pre><code>For example, given s = "aab",  
-1. Return [["aa","b"],["a","a","b"]]  
-2. Return 1 since the palindrome partitioning ["aa","b"] could be produced using 1 cut.
-</code></pre>
-
-<!--more-->
-
-
-<p>===================================================================================
-解题思路，动态规划：(和矩阵链相乘时，使乘法次数达到最小的运算顺序思路类似。)<br/>
-这题比较有意思的是，两个动态规划的思路嵌在一起了。   <br><br>
-  1. 用isPa[i][j]矩阵记录S.subString(i,j)是否为回文。 <br/>
-  2. 针对不同的问题，根据isPa[i][j]矩阵输出不同结果： <br/>
-   + 详细分割串（递归输出）：Start 到 End的所有回文分割串是Start到i,i到End的所有回文分割方法的组合。<br/>
-   + 最小分割次数（DP）：用dpMin[j]记录s.subString(0,j)的最小分割次数。</p>
-
-<pre><code>  dpMin[j] = Min{dpMin[j], 1+dpMin[i-1]} （i在0——j， 且s.subString(i,j)为回文）
-</code></pre>
-
-<p>===================================================================================</p>
-
-<ul>
-<li><p>注意递归输出所有可能的划分时的思路。
-```java Leetcode131.java
-public class Palindrome {</p>
-
-<p>  public ArrayList&lt;ArrayList<String>> partition(String s) {
-      if( s == null || s.length() == 0)
-          return new ArrayList&lt;ArrayList<String>>();</p>
-
-<pre><code>  boolean [][] isPa = new boolean[s.length()][s.length()];
-  for( int i=0; i&lt;s.length(); i++)
-  {
-      isPa[i][i] = true;
-  }
-  for( int d = 1; d &lt; s.length(); d++)
-      for( int i = 0; i &lt; s.length()-d; i++)
-      {
-          int j = i+d;
-          if ( d == 1 )
-          {
-              isPa[i][j] = (s.charAt(i) == s.charAt(j));
-          }
-          else {
-              isPa[i][j] = (s.charAt(i)== s.charAt(j)) &amp;&amp; isPa[i+1][j-1];
-          }
-      }
-  return printResult(s, 0, isPa);
-</code></pre>
-
-<p>  } <br/>
-  public ArrayList&lt;ArrayList<String>> printResult(String s, int start, boolean [][] isPa) {
-      ArrayList&lt;ArrayList<String>> pa = new ArrayList&lt;ArrayList<String>>();</p>
-
-<pre><code>  if(start == s.length())
-  {
-      pa.add(new ArrayList&lt;String&gt;());
-      return pa;
-  }       
-  for( int i = start; i &lt; s.length(); i++)
-  {
-      if (isPa[start][i])
-          for(ArrayList&lt;String&gt; subPa : printResult(s, i+1, isPa))
-          {
-              subPa.add(0, s.substring(start, i+1));
-              pa.add(subPa);
-          }
-  }
-  return pa;
-</code></pre>
-
-<p>  }
-  public static void main(String[] args) {
-      // TODO Auto-generated method stub
-      Palindrome palindrome  = new Palindrome();
-      String s=&ldquo;11bbcdcw&rdquo;;
-      ArrayList&lt;ArrayList<String>> result = palindrome.partition(s);
-  }
-}
-```</p></li>
-<li>注意更新isPa[][]的顺序。
-``` java Leetcode132.java
-public int minCut(String s) {
-  if (s == null || s.length() == 0)
-     return 0; <br/>
-  int dpMin[] = new int[s.length()];
-  for (int i = 0; i &lt; s.length(); i++)
-      dpMin[i] = i; <br/>
-  boolean[][] isPa = new boolean[s.length()][s.length()];
-  for (int j = 0; j &lt; s.length(); j++) {
-      for (int i = j; i >= 0; i&mdash;)
-          if ((s.charAt(i) == s.charAt(j) &amp;&amp; (j &ndash; i &lt; 2 || isPa[i + 1][j &ndash; 1]))) {
-              isPa[i][j] = true;
-              if (i > 0)
-                  dpMin[j] = Math.min(dpMin[j], 1 + dpMin[i &ndash; 1]);
-              else
-                  dpMin[j] = 0;
-          }
-  }</li>
-</ul>
-
-
-<p>return dpMin[s.length() &ndash; 1];
-}
-```</p>
-
-<p>reference:  <br/>
-<a href="http://discuss.leetcode.com/questions/1265/palindrome-partitioning">http://discuss.leetcode.com/questions/1265/palindrome-partitioning</a>  <br/>
-<a href="http://discuss.leetcode.com/questions/1266/palindrome-partitioning-ii">http://discuss.leetcode.com/questions/1266/palindrome-partitioning-ii</a></p>
-
-<p>现阶段全部笨办法，有空看看别人的优化思路吧（700ms距离36ms也许是世界上最遥远的距离）。 <br/>
-<a href="http://www.cnblogs.com/shawnhue/archive/2013/05/19/leetcode_132.html">http://www.cnblogs.com/shawnhue/archive/2013/05/19/leetcode_132.html</a></p>
 ]]></content>
   </entry>
   

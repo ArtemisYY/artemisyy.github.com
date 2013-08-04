@@ -4,7 +4,7 @@
   <title><![CDATA[ArtemisYY's Blog]]></title>
   <link href="http://ArtemisYY.github.io/atom.xml" rel="self"/>
   <link href="http://ArtemisYY.github.io/"/>
-  <updated>2013-08-04T19:54:20+08:00</updated>
+  <updated>2013-08-04T22:18:06+08:00</updated>
   <id>http://ArtemisYY.github.io/</id>
   <author>
     <name><![CDATA[ArtemisYY]]></name>
@@ -12,6 +12,174 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Binary Tree Level Order Traversal]]></title>
+    <link href="http://ArtemisYY.github.io/blog/2013/08/04/binary-tree-level-order-traversal/"/>
+    <updated>2013-08-04T22:01:00+08:00</updated>
+    <id>http://ArtemisYY.github.io/blog/2013/08/04/binary-tree-level-order-traversal</id>
+    <content type="html"><![CDATA[<p>Leetcode 102, 107. 没写完。</p>
+
+<p>Given a binary tree, return the level order traversal of its nodes&#8217; values. (ie, from left to right, level by level).    <!--more-->
+For example:
+Given binary tree {3,9,20,#,#,15,7},</p>
+
+<pre><code>    3
+   / \
+  9  20
+    /  \
+   15   7
+</code></pre>
+
+<p>return its level order traversal as:[ [3],[9,20],[15,7] ]</p>
+
+<p>解题思路：  <br/>
+(1).广度优先BFS，用队列.</p>
+
+<ul>
+<li>两个队列，分别记录当前层和下一层的结点.</li>
+<li>一个队列，以及整型count，nextCount，分别记录当前层和下一层的结点个数.<br>
+(2).深度优先DFS.还有点问题.</li>
+</ul>
+
+
+<p>===================================================================================================================</p>
+
+<figure class='code'><figcaption><span>leetcode102.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span>  <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="nf">levelOrder</span><span class="o">(</span><span class="n">TreeNode</span> <span class="n">root</span><span class="o">)</span> <span class="o">{</span>   
+</span><span class='line'>  <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="n">traversal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;&gt;();</span>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span> <span class="n">root</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">traversal</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">level</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+</span><span class='line'>  <span class="n">Queue</span><span class="o">&lt;</span> <span class="n">TreeNode</span><span class="o">&gt;</span> <span class="n">upper</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedList</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;();</span>
+</span><span class='line'>  <span class="n">Queue</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="n">lower</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedList</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;();</span>
+</span><span class='line'>  <span class="n">upper</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">root</span><span class="o">);</span>
+</span><span class='line'>  <span class="k">while</span><span class="o">(</span> <span class="o">!</span><span class="n">upper</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">||</span> <span class="o">!</span><span class="n">lower</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>      <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">tempList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+</span><span class='line'>      <span class="k">while</span><span class="o">(!</span><span class="n">upper</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span>
+</span><span class='line'>      <span class="o">{</span>
+</span><span class='line'>          <span class="n">TreeNode</span> <span class="n">tempNode</span> <span class="o">=</span> <span class="n">upper</span><span class="o">.</span><span class="na">peek</span><span class="o">();</span>
+</span><span class='line'>          <span class="n">tempList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">tempNode</span><span class="o">.</span><span class="na">val</span><span class="o">);</span>
+</span><span class='line'>          <span class="k">if</span><span class="o">(</span> <span class="n">tempNode</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>              <span class="n">lower</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">tempNode</span><span class="o">.</span><span class="na">left</span><span class="o">);</span>
+</span><span class='line'>          <span class="k">if</span><span class="o">(</span><span class="n">tempNode</span><span class="o">.</span><span class="na">right</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>              <span class="n">lower</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">tempNode</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+</span><span class='line'>          <span class="n">upper</span><span class="o">.</span><span class="na">poll</span><span class="o">();</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="n">level</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;(</span><span class="n">tempList</span><span class="o">);</span><span class="c1">//注意一定得这么干，否则直接加tempList, 出了作用域就没了。-_-|||</span>
+</span><span class='line'>      <span class="n">traversal</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">level</span><span class="o">);</span>
+</span><span class='line'>      <span class="k">for</span><span class="o">(</span> <span class="n">TreeNode</span> <span class="n">node</span> <span class="o">:</span> <span class="n">lower</span><span class="o">)</span>
+</span><span class='line'>          <span class="n">upper</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">node</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">lower</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="k">return</span> <span class="n">traversal</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>leetcode102.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kd">static</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="nf">levelOrder</span><span class="o">(</span><span class="n">TreeNode</span> <span class="n">root</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;&gt;</span> <span class="n">traversal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;&gt;();</span>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span> <span class="n">root</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">traversal</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">Queue</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;</span> <span class="n">queue</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedList</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">&gt;();</span>
+</span><span class='line'>  <span class="n">queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">root</span><span class="o">);</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">level</span><span class="o">;</span>
+</span><span class='line'>  <span class="k">while</span><span class="o">(!</span><span class="n">queue</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>      <span class="n">level</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">nextCount</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>      <span class="k">for</span><span class="o">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">count</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+</span><span class='line'>      <span class="o">{</span>
+</span><span class='line'>          <span class="n">TreeNode</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="na">poll</span><span class="o">();</span>
+</span><span class='line'>          <span class="n">level</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">val</span><span class="o">);</span>
+</span><span class='line'>          <span class="k">if</span><span class="o">(</span> <span class="n">temp</span><span class="o">.</span><span class="na">left</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>          <span class="o">{</span>
+</span><span class='line'>              <span class="n">queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">left</span><span class="o">);</span>
+</span><span class='line'>              <span class="n">nextCount</span><span class="o">++;</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>          <span class="k">if</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">right</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>          <span class="o">{</span>
+</span><span class='line'>              <span class="n">queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">right</span><span class="o">);</span>
+</span><span class='line'>              <span class="n">nextCount</span><span class="o">++;</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="n">traversal</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">level</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">count</span> <span class="o">=</span> <span class="n">nextCount</span><span class="o">;</span>
+</span><span class='line'>          
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">traversal</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Longest Consecutive Sequence]]></title>
